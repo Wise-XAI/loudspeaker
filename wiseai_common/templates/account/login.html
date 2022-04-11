@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% translate "Sign In" %}{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <!-- Animate.css -->
+  <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block body_class %}login{% endblock body_class %}
+
+{% block body %}
+
+{% comment %} <h1>{% translate "Sign In" %}</h1> {% endcomment %}
+
+{% get_providers as socialaccount_providers %}
+<div>
+  <a class="hiddenanchor" id="signup"></a>
+  <a class="hiddenanchor" id="signin"></a>
+
+  <div class="login_wrapper">
+    <div class="animate form login_form">
+      <section class="login_content">
+
+      <form class="login" method="POST" action="{% url 'users:login' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+
+          <h1>Login Form</h1>
+
+          {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              {% comment %} <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% translate "Forgot Password?" %}</a> {% endcomment %}
+              {% comment %} <button class="primaryAction btn btn-primary" type="submit">{% translate "Sign In" %}</button> {% endcomment %}
+          <div>
+            <button class="primaryAction btn btn-primary" type="submit">{% translate "Log in" %}</button>
+            <a class="reset_pass secondaryAction" href="{% url 'account_reset_password' %}">{% translate "Forgot Password?" %}</a>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="separator">
+      <p class="change_link">{% translate "New to site?" %}
+        <a href="#signup" class="to_register"> {% translate "Create Account" %} </a>
+      </p>
+
+      {% if socialaccount_providers %}
+        <p>
+        {% translate "Please sign in with one of your existing third party accounts:" %}
+          {% if ACCOUNT_ALLOW_REGISTRATION %}
+            {% blocktranslate trimmed %}
+              Or, <a href="{{ signup_url }}">sign up</a>
+              for a {{ site_name }} account and sign in below:
+            {% endblocktranslate %}
+          {% endif %}
+        </p>
+
+            <div class="socialaccount_ballot">
+
+            <ul class="socialaccount_providers">
+                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+              </ul>
+
+              <div class="login-or">{% translate "or" %}</div>
+
+            </div>
+
+            {% include "socialaccount/snippets/login_extra.html" %}
+
+            {% else %}
+              {% if ACCOUNT_ALLOW_REGISTRATION %}
+                <p>
+                  {% blocktranslate trimmed %}
+                    If you have not created an account yet, then please
+                    <a href="{{ signup_url }}">sign up</a> first.
+                  {% endblocktranslate %}
+                </p>
+              {% endif %}
+            {% endif %}
+
+            <div class="clearfix"></div>
+            <br />
+
+            <div>
+              <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+              <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="register" class="animate form registration_form">
+      <section class="login_content">
+        <form>
+          <h1>Create Account</h1>
+          <div>
+            <input type="text" class="form-control" placeholder="Username" required="" />
+          </div>
+          <div>
+            <input type="email" class="form-control" placeholder="Email" required="" />
+          </div>
+          <div>
+            <input type="password" class="form-control" placeholder="Password" required="" />
+          </div>
+          <div>
+            <a class="btn btn-default submit" href="index.html">Submit</a>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="separator">
+            <p class="change_link">Already a member ?
+              <a href="#signin" class="to_register"> Log in </a>
+            </p>
+
+            <div class="clearfix"></div>
+            <br />
+
+            <div>
+              <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+              <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+{% comment %} <form class="login" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form|crispy }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% translate "Forgot Password?" %}</a>
+  <button class="primaryAction btn btn-primary" type="submit">{% translate "Sign In" %}</button>
+</form> {% endcomment %}
+
+
+{% comment %} {% endblock %} {% endcomment %}
+{% endblock body %}
