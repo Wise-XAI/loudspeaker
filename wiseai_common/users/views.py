@@ -4,7 +4,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
+
 from allauth.account.views import LoginView, LogoutView
+
 User = get_user_model()
 
 

@@ -7,6 +7,7 @@ from wiseai_common.users.views import (
     user_redirect_view,
     user_update_view,
 )
+
 app_name = "users"
 urlpatterns = [
     path("login/", view=user_login_view, name="login"),
